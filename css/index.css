@@ -1,0 +1,38 @@
+#carouselExampleFade {
+    margin-top: 30px;
+
+}
+
+.carousel-item active {
+    width: 600px;
+}
+
+form {
+    margin-top: 30px;
+}
+
+h1 {
+    font-size: 30px;
+    color: cadetblue;
+    margin-top: 20px;
+}
+
+#id{
+    margin-top: 20px;
+}
+
+#mainButton {
+    background-color: cadetblue;
+    border-radius: 20%;
+    padding: 5px 10px 5px 10px;
+    width: 90px;
+    height: 40px;
+    border: none;
+    color: white;
+}
+
+#signUp {
+    margin-top: 30px;
+}
+
+
