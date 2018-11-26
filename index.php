@@ -3,13 +3,14 @@
 session_start();
 
 $link = mysqli_connect('localhost', 'root', '', 'menugenerator');
+/*mysqli_query($link,"set names utf8");
+mysqli_query($link,"set charset set utf8");*/
 
 if(!$link) {
     die("Connection to database failed") . mysqli_connect_error();
 }
 
-/*mysqli_query($link,"set names utf8");
-mysqli_query($link,"set charset set utf8");*/
+
 
 $error="";
 
