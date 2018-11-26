@@ -7,13 +7,12 @@ session_start();
 $name = $_SESSION['name'];
 header('Content-Type: text/html; charset=utf-8');
 
-$link = mysqli_connect('localhost', 'root', '', 'menugenerator');
-mysqli_set_charset($link,"utf8");
+$link = mysqli_connect('localhost', 'root', '', 'mealplanner');
+/*mysqli_set_charset($link,"utf8");*/
 
 if(!$link) {
     die("Connection to database failed") . mysqli_connect_error();
 }
-
 
 
 $error="";
@@ -144,11 +143,17 @@ if(isset($_POST['submit'])) {
         Mandatory field
     </small>
     <br><br>
-    <div class="form-row">
-    <div class="form-group col-md-2">
-        <input type="text" class="form-control" name="ingredient" id="ingredient1" placeholder="Ingredient #1">
+
+    <div class="form-group">
+        <label for="exampleFormControlTextarea1">Ingredients</label>
+        <textarea class="form-control" name="ingredient" id="exampleFormControlTextarea1" placeholder="E.g., 3 eggs, 200ml milk" rows="3"></textarea>
     </div>
-        <!--<div class="form-group col-md-2">
+
+    <!--<div class="form-row">
+    <div class="form-group col-md-6">
+            <input type="text" class="form-control" name="ingredient" id="ingredient1" placeholder="Ingredient #1">
+        </div>
+        <div class="form-group col-md-2">
             <input type="text" class="form-control" name="ingredient" id="ingredient2" placeholder="Ingredient #2">
         </div>
         <div class="form-group col-md-2">
