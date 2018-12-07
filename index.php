@@ -1,16 +1,11 @@
 <?php
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 session_start();
 
-$link = mysqli_connect('localhost', 'root', '', 'menugenerator');
-/*mysqli_query($link,"set names utf8");
-mysqli_query($link,"set charset set utf8");*/
-
-if(!$link) {
-    die("Connection to database failed") . mysqli_connect_error();
-}
-
-
+include "db.php";
 
 $error="";
 

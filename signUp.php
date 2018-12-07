@@ -2,15 +2,7 @@
 
 session_start();
 
-$link = mysqli_connect('localhost', 'root', '', 'mealplanner');
-/*mysqli_set_charset($link,"utf8");*/
-
-if(!$link) {
-    die("Connection to database failed") . mysqli_connect_error();
-}
-
-/*mysqli_query($link,"set names utf8");
-mysqli_query($link,"set charset set utf8");*/
+include "db.php";
 
 $error="";
 
@@ -58,18 +50,8 @@ if(isset($_POST['submit'])) {
     }
 }
 
-/*require_once "config.php";
-if (isset($_SESSION['access_token'])) {
-header('Location: index.php');
-exit();
-}
-$redirectURL = "http://localhost/FacebookLogin/fb-callback.php";
-$permissions = ['email'];
-$loginURL = $helper->getLoginUrl($redirectURL, $permissions);*/
+include "head.html";
 ?>
-
-
-
 
 <!doctype html>
 <html lang="en">
@@ -82,6 +64,8 @@ $loginURL = $helper->getLoginUrl($redirectURL, $permissions);*/
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 </head>
 <body>
+
+
 
 <div class="container" style="margin-top: 100px">
     <div class="row justify-content-center">

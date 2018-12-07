@@ -1,20 +1,8 @@
 <?php
-session_start();
-
-$name = $_SESSION['name'];
-
-$link = mysqli_connect('localhost', 'root', '', 'mealplanner');
-
-if(!$link) {
-    die("Connection to database failed") . mysqli_connect_error();
-}
-
-
-
-
+include "db.php";
+include "session.php";
 
 ?>
-
 
 <!doctype html>
 <html lang="en">
@@ -27,54 +15,43 @@ if(!$link) {
     <link rel="stylesheet" href="css/main.css">
     <title>Your Meal Planner</title>
 </head>
+
+
+
 <body>
 
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#"><img src="img/MealPlanner-logo.png"></a>
-    <li style="list-style: none" class="nav-item">
-        <span>Welcome, <?php echo ' '.$name.'!' ?></span>
-    </li>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+<?php
+include "navbar.html";
+?>
 
-    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-            <li class="nav-item active">
-                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="newRecipe.php">New recipe</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="mealPlanner.php">Meal planner</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="shoppingList.php">Shopping list</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="index.php">Log out</a>
-            </li>
-
-
-        </ul>
-
-
-    </div>
-</nav>
 <br><br>
 
-<h2>My recipes</h2>
-<?php
+<div id="mealplan" class="row">
 
-$query = "SELECT title FROM `receptes` WHERE username = '$name'";
-$result = mysqli_query($link, $query);
-while ($row = mysqli_fetch_array($result)){
-    echo $row['title'].'<br>';
-}
+    <div class="col-lg-2">
 
-?>
+</div>
+    <div class="col-lg-8">
+        <h2>My recipes</h2>
+        <form method="get">
+            <?php
+
+            $query = "SELECT * FROM `receptes` WHERE username = '$name'";
+            $result = mysqli_query($link, $query);
+            while ($row = mysqli_fetch_array($result)){
+                $title = $row['title'];
+                echo '<a href="Update-recipe.php?title='.strip_tags($title).'">'.$title.'</a><br>';
+
+
+            }
+            ?>
+        </form>
+    </div>
+
+    <div class="col-lg-2">
+
+    </div>
 
 
 

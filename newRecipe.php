@@ -1,21 +1,10 @@
 <?php
 
-
-
-session_start();
-
-$name = $_SESSION['name'];
-header('Content-Type: text/html; charset=utf-8');
-
-$link = mysqli_connect('localhost', 'root', '', 'mealplanner');
-/*mysqli_set_charset($link,"utf8");*/
-
-if(!$link) {
-    die("Connection to database failed") . mysqli_connect_error();
-}
-
+include "session.php";
+include "db.php";
 
 $error="";
+$message='';
 
 if(isset($_POST['submit'])) {
 
@@ -33,11 +22,22 @@ if(isset($_POST['submit'])) {
     }
     if (isset($_POST['breakfast'])) {
         $breakfastTick = '1';
-    } elseif (isset($_POST['lunch'])){
+    }
+    if (isset($_POST['lunch'])){
         $lunchTick = '1';
-    } elseif (isset($_POST['dinner'])){
+    }
+    if (isset($_POST['dinner'])) {
         $dinnerTick = '1';
-    }else {
+    }
+
+       /* if (isset($_POST['breakfast'])) {
+            $breakfastTick = '1';
+        } elseif (isset($_POST['lunch'])){
+            $lunchTick = '1';
+        } elseif (isset($_POST['dinner'])){
+            $dinnerTick = '1';*/
+     if((!isset($_POST['breakfast']))&& (!isset($_POST['lunch'])) && (!isset($_POST['dinner'])))
+     {
         $error = '<div class="alert alert-dark" role="alert">Please tick if it is recipe for breakfast, lunch or dinner</div><br>';
     }
 
@@ -47,12 +47,15 @@ if(isset($_POST['submit'])) {
 
         $query = "INSERT INTO `receptes` (`title` , `url` , `breakfast` , `lunch` , `dinner` , `ingredient` , `description` , `tag` , `username`) VALUES ('$title','$url','$breakfastTick','$lunchTick','$dinnerTick','$ingredient','$description','$tag','$name')";
         $result = mysqli_query($link, $query);
-
-
-
+            if(! $result ) {
+                die('Could not delete data: . '.mysqli_error($link));
+            } else {
+                $message = "<div class=\"alert alert-success\" role=\"alert\">Recipe added successfully<br><br><a class=\"btn btn-success\" href=\"main.php\" role=\"button\">Back to the main page</a></div>";
+            }
     }
 
 }
+
 
 
 ?>
@@ -71,48 +74,21 @@ if(isset($_POST['submit'])) {
     <title>New recipe</title>
 </head>
 <body>
-<span id="error"><?php echo $error ?></span>
+<?php
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#"><img src="img/MealPlanner-logo.png"></a>
-    <li style="list-style: none" class="nav-item">
-        <span>Enjoy, <?php echo ' '.$name.'!' ?></span>
-    </li>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+include "navbar.html";
+?>
+<span id="error"><?php echo $error . $message ?></span>
 
-    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-            <li class="nav-item">
-                <a class="nav-link" href="main.php">Home</a>
-            </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="#">New recipe<span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="mealPlanner.php">Meal planner</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="shoppingList.php">Shopping list</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="index.php">Log out</a>
-            </li>
-
-
-        </ul>
-
-
-    </div>
-</nav>
-
+<div class="col-lg-2">
+</div>
+<div class="col-lg-8">
 <h2>New recipe</h2>
 <br>
 
 
 
-<form accept-charset="UTF-8" method="post">
+<form id="recipe" accept-charset="UTF-8" method="post">
     <div class="form-row">
         <div class="form-group col-md-6">
             <label for="inputEmail4">Title</label>
@@ -145,54 +121,11 @@ if(isset($_POST['submit'])) {
     <br><br>
 
     <div class="form-group">
-        <label for="exampleFormControlTextarea1">Ingredients</label>
+        <label for="exampleFormControlTextarea1">Ingredients and quantity</label>
         <textarea class="form-control" name="ingredient" id="exampleFormControlTextarea1" placeholder="E.g., 3 eggs, 200ml milk" rows="3"></textarea>
     </div>
 
-    <!--<div class="form-row">
-    <div class="form-group col-md-6">
-            <input type="text" class="form-control" name="ingredient" id="ingredient1" placeholder="Ingredient #1">
-        </div>
-        <div class="form-group col-md-2">
-            <input type="text" class="form-control" name="ingredient" id="ingredient2" placeholder="Ingredient #2">
-        </div>
-        <div class="form-group col-md-2">
-            <input type="text" class="form-control" name="ingredient" id="ingredient3" placeholder="Ingredient #3">
-        </div>
-        <div class="form-group col-md-2">
-            <input type="text" class="form-control" name="ingredient" id="ingredient4" placeholder="Ingredient #4">
-        </div>
-        <div class="form-group col-md-2">
-            <input type="text" class="form-control" name="ingredient" id="ingredient5" placeholder="Ingredient #5">
-        </div>
-        <div class="form-group col-md-2">
-            <input type="text" class="form-control" name="ingredient" id="ingredient6" placeholder="Ingredient #6">
-        </div>
-    </div>
-    <div class="form-row">
-        <div class="form-group col-md-2">
-            <input type="text" class="form-control" name="ingredient" id="ingredien7t" placeholder="Ingredient #7">
-        </div>
-        <div class="form-group col-md-2">
-            <input type="text" class="form-control" name="ingredient" id="ingredient8" placeholder="Ingredient #8">
-        </div>
-        <div class="form-group col-md-2">
-            <input type="text" class="form-control" name="ingredient" id="ingredient9" placeholder="Ingredient #9">
-        </div>
-        <div class="form-group col-md-2">
-            <input type="text" class="form-control" name="ingredient" id="ingredient10" placeholder="Ingredient #10">
-        </div>
-        <div class="form-group col-md-2">
-            <input type="text" class="form-control" name="ingredient" id="ingredient11" placeholder="Ingredient #11">
-        </div>
-        <div class="form-group col-md-2">
-            <input type="text" class="form-control" name="ingredient" id="ingredient12" placeholder="Ingredient #12">
-        </div>
-    </div>-->
-
-    </div>
-
-        <div class="form-group">
+    <div class="form-group">
             <label for="exampleFormControlTextarea1">Description</label>
             <textarea class="form-control"  name="description" exampleFormControlTextarea1" rows="3"></textarea>
         </div>
@@ -206,8 +139,11 @@ if(isset($_POST['submit'])) {
             </select>
         </div>
 
-    <button type="submit" name="submit" class="btn btn-primary">Add recipe</button>
-</form>
+    <button type="submit" name="submit" id="add" class="btn btn-primary">Add recipe</button>
+</form><br>
+</div>
+<div class="col-lg-2">
+</div>
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
